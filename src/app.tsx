@@ -2,7 +2,7 @@ import { MetaProvider, Title } from "@solidjs/meta";
 import { Router } from "@solidjs/router";
 import { FileRoutes } from "@solidjs/start/router";
 import { Suspense } from "solid-js";
-import "./app.css";
+import './styles';
 
 export default function App() {
     return (
@@ -11,7 +11,7 @@ export default function App() {
             <MetaProvider>
             <Title>SolidStart - Basic</Title>
             <div class="nav-bar">
-                <a href="javascript:void(0);" class="blue">Plex Sign In</a>
+                <a href="javascript:void(0);" class="blue narrow">Plex Sign In</a>
             </div>
             <Suspense>{props.children}</Suspense>
             </MetaProvider>
