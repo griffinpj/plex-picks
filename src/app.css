@@ -1,9 +1,17 @@
 body {
   font-family: Gordita, Roboto, Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
+  width: 100%;
+  height: 100%;
+  
+  background-color: #191919 !important;
+  background-image: radial-gradient(at 80% 100%, hsla(241,0%,9%,1) 0px, transparent 50%), radial-gradient(at 1% 1%, hsla(348,47%,33%,1) 0px, transparent 50%) !important;
+  min-height: 800px !important;
 }
 
-a {
-  margin-right: 1rem;
+.nav-bar {
+    display: flex;
+    flex-direction: row;
+    justify-content: right;
 }
 
 main {
@@ -12,28 +20,67 @@ main {
   margin: 0 auto;
 }
 
-h1 {
-  color: #335d92;
-  text-transform: uppercase;
-  font-size: 4rem;
-  font-weight: 100;
-  line-height: 1.1;
-  margin: 4rem auto;
-  max-width: 14rem;
+
+a,
+button {
+    width: 200px;
+    margin-bottom: 16px;
+
+    text-align: center;
+    display: inline;
+    border-radius: 3px;
+    padding: 0.5rem;
+    margin: 1.5rem;
+    transition-duration: 0.4s;
+    text-decoration: none;
+
+    &.red {
+        height: max-content;
+        background: transparent;
+        background-color: #a3d9ff;
+        color: white;
+        border: 2px solid rgb(215, 97, 97);
+        background-color: rgb(215, 97, 97);
+
+        &:hover {
+            background: transparent;
+            color: rgb(215, 97, 97);
+            border: 2px solid rgb(215, 97, 97);
+            cursor: pointer;
+            opacity: 0.8;
+        }
+    }
+
+    &.blue {
+        height: max-content;
+        background: transparent;
+        background-color: #a3d9ff;
+        color: white;
+        border: 2px solid rgb(93, 93, 223);
+        background-color: rgb(93, 93, 223);
+        
+        &:hover {
+            background: transparent;
+            color: rgb(93, 93, 223);
+            border: 2px solid rgb(93, 93, 223);
+            cursor: pointer;
+            opacity: 0.8;
+        }
+    }
 }
 
-p {
-  max-width: 14rem;
-  margin: 2rem auto;
-  line-height: 1.35;
+h1 {
+  color: #F74366;
+  font-size: 4.5em;
+  font-style: normal;
+  line-height: 1.1em;
+  font-weight: 900;
+  letter-spacing: -0.02em;
+  font-family: "Circular Bold",plexeina-bold,Helvetica,sans-serif;
 }
 
 @media (min-width: 480px) {
   h1 {
-    max-width: none;
-  }
-
-  p {
     max-width: none;
   }
 }

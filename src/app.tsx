@@ -5,18 +5,19 @@ import { Suspense } from "solid-js";
 import "./app.css";
 
 export default function App() {
-  return (
-    <Router
-      root={props => (
-        <MetaProvider>
-          <Title>SolidStart - Basic</Title>
-          <a href="/">Index</a>
-          <a href="/about">About</a>
-          <Suspense>{props.children}</Suspense>
-        </MetaProvider>
-      )}
-    >
-      <FileRoutes />
-    </Router>
-  );
+    return (
+        <Router
+        root={props => (
+            <MetaProvider>
+            <Title>SolidStart - Basic</Title>
+            <div class="nav-bar">
+                <a href="javascript:void(0);" class="blue">Plex Sign In</a>
+            </div>
+            <Suspense>{props.children}</Suspense>
+            </MetaProvider>
+            )}
+        >
+        <FileRoutes />
+        </Router>
+       );
 }
