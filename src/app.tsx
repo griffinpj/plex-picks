@@ -11,6 +11,7 @@ export default function App() {
             <MetaProvider>
             <Title>SolidStart - Basic</Title>
             <div class="nav-bar">
+                <a href="/" class="red narrow">Home</a>
                 <a href="javascript:void(0);" class="blue narrow">Plex Sign In</a>
             </div>
             <Suspense>{props.children}</Suspense>
