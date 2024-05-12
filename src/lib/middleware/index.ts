@@ -1,5 +1,5 @@
 import { createMiddleware } from '@solidjs/start/middleware';
-import { attachSession } from './session.ts';
+import { attachSession } from './session';
 
 export default createMiddleware({
     onRequest: [

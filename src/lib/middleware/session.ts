@@ -5,5 +5,6 @@ export async function attachSession (request: Request) {
         password: import.meta.env.VITE_SESSION_SECRET
     });
 
+    request.locals = {};
     request.locals.session = session;
 }
