@@ -7,7 +7,7 @@ export default function InitGroup() {
     const group = createAsync(() => cache(serverUtils.getGroup, 'group')(params.id));
 
     return (
-        <div>
+        <div class="group-users-container">
             <a class="button red">Start Picking</a>
             <ul>
                 {group() && group().users!.map((user: string) => (

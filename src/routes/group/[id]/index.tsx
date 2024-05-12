@@ -6,7 +6,7 @@ export default function Group() {
     return (
         <main>
         <Title>Plex Picks</Title>
-        <h1>Plex Picks</h1>
+        <h1>Get Ready!</h1>
         <GroupUsers />
         </main>
     );
