@@ -8,11 +8,6 @@ body {
   min-height: 800px !important;
 }
 
-.nav-bar {
-    display: flex;
-    flex-direction: row;
-    justify-content: right;
-}
 
 main {
   text-align: center;

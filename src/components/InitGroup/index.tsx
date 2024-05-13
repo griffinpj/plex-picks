@@ -1,27 +1,24 @@
 import * as utils from '~/lib/utils';
 import * as request from '~/lib/utils/request';
+
+import SessionAlias from '~/components/SessionAlias';
 import "./InitGroup.css";
 
-export default function InitGroup() {
-    // TODO build out join group functinality
-    // TODO update users list for others on /group/[id] page when other join
-    // stream ? polling ?
-
+export default function InitGroup (props: any) {
     const createGroupHandler = async () => {
-        const data = await request.post(`/api/group/new`, {
-            msg: 'hello world'
-        });
-
+        const data = await request.post('/api/group/new', {});
         utils.navigateTo(`/group/${data.link}`);
     };
 
     return (
         <div class="init-group-container">
-            <a 
+            <SessionAlias alias={props.alias} setAlias={props.setAlias} />
+            <h3> {props.alias} </h3>
+            <button
                 id="j-create-group" 
                 class="red"
                 onClick={ createGroupHandler }
-            >Create Group</a>
+            >Create Group</button>
             <label for="j-join-group">
                 Join Group
                 <input 

@@ -1,0 +1,14 @@
+
+input {
+    border-radius: 3px;
+    width: 200px;
+    background: transparent;
+    color: white;
+    /* border: 1px solid rgb(215, 97, 97); */
+    margin-top: 8px;
+    padding: 4px;
+
+    &.blue {
+        border: 2px solid rgb(93, 93, 223);
+    }
+}
