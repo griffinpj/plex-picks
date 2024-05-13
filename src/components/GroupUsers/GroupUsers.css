@@ -12,6 +12,10 @@ li {
     color: white;
 }
 
+h3 {
+    color: white;
+}
+
 .group-users-container {
     display: flex;
     flex-direction: column;
