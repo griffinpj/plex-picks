@@ -18,6 +18,10 @@ class RedisController {
         this.store.set(key, value);
         return new Promise((resolve) => resolve());
     }
+
+    get pairs () : any {
+        return [...this.store.entries()];
+    }
 }
 
 

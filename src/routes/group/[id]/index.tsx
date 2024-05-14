@@ -1,41 +1,28 @@
 import { Title } from "@solidjs/meta";
-import { createAsync, useParams } from "@solidjs/router";
-import * as serverUtils from '~/lib/utils/server';
+import { useParams } from "@solidjs/router";
+import * as request from '~/lib/utils/request';
 import GroupUsers from '~/components/GroupUsers';
 import './group.css';
-import { createSignal } from "solid-js";
+import { createResource, createSignal } from "solid-js";
+import type { Group } from '~/types/group';
 
-const mapAlias = (session: string) => {
-    const userAlias = createAsync(() => serverUtils.getAlias(session));
-    return userAlias() || session;
+const fetchGroup = async (id: string) => {
+    const data = await request.get(`http://localhost:3001/api/group/${id}`);
+    return data.group;
 };
 
 export default function Group() {
     const params = useParams();
-    const groupAsync = createAsync(() => serverUtils.getGroup(params.id));
-    
-    let currentGroup = groupAsync(); 
-    const [owner, setOwner] = createSignal(mapAlias(currentGroup?.owner));
-    const [users, setUsers] = createSignal(currentGroup?.users.map(mapAlias));
 
-    const refreshGroup = () => {
-        const newGroup = groupAsync();
+    const [ linkId ] = createSignal(params.id);
+    const [ group, { refetch }] = createResource(linkId, fetchGroup);
 
-        let { owner, users = [] } = newGroup;
-        owner = mapAlias(owner);
-        users.push('1121');
-        users = users.map(mapAlias);
-
-        // TODO why does this refresh not trigger GroupUsers to re render !?!?
-        setOwner(owner);
-        setUsers([ ...users ]);
-    };
-
+    // setInterval(() => refetch(), 3000)
     return (
         <main>
         <Title>Plex Picks</Title>
         <h1>Get Ready!</h1>
-        <GroupUsers owner={owner()} users={users()} refresh={refreshGroup}/>
+        <GroupUsers group={group()} refresh={refetch} />
         </main>
     );
 }

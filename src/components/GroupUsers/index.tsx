@@ -1,16 +1,16 @@
 import "./GroupUsers.css";
 
-export default function InitGroup({ refresh, owner, users}: any) {
+export default function InitGroup(props: any) {
     return (
         <div class="group-users-container">
             <button class="button red">Start Picking</button>
-            <button onClick={refresh} class="button blue narrow">Refresh</button>
+            <button onClick={props.refresh} class="button blue narrow">Refresh</button>
             <h3>
                 Created By: 
-                {owner}
+                {props.group?.owner}
             </h3>
             <ul>
-                {users && users.length && users.map((user: string) => (
+                {props.group?.users && props.group?.users.length && props.group.users.map((user: string) => (
                     <li> { user } </li>
                 ))}
             </ul>
