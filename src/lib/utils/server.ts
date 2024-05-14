@@ -1,21 +1,22 @@
 import { getRequestEvent } from 'solid-js/web';
-import RedisController from '~/lib/redis';
+import * as groupModel from '~/lib/group';
+import * as sessionModel from '~/lib/session';
 import type { Group } from '~/types/group';
+
+export async function addToGroup (linkId: string) : Promise<void> {
+    'use server';
+    const req = getRequestEvent();
+    const sessionId = await req?.locals.session.id;
+
+    const group = await groupModel.getGroup(linkId);
+    group.users.push(sessionId);
+
+    return groupModel.setGroup(linkId, group);
+}
 
 export async function getGroup (id: string) : Promise<Group> {
     'use server';
-    let group = RedisController.get(id);
-    if (group.users) {
-        group.users = await Promise.all(
-            group.users.map((session: String) => 
-                RedisController.get(`session-${session}`)
-            )
-        );
-    }
-
-    console.log(group);
-
-    return new Promise((resolve) => resolve(group));
+    return groupModel.getAliasedGroup(id);
 }
 
 export async function getSession () : Promise<string> {
@@ -26,5 +27,10 @@ export async function getSession () : Promise<string> {
 
 export async function getAlias (session: string) : Promise<string> {
     'use server';
-    return RedisController.get(`session-${session}`);
+    return groupModel.getAlias(session);
+}
+
+export async function setAlias (session: string, alias: string) : Promise<void> {
+    'use server';
+    return sessionModel.setAlias(session, alias);
 }

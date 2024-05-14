@@ -19,7 +19,7 @@ export default function Home() {
         <main>
             <Title>Plex Picks</Title>
             <h1>Plex Picks</h1>
-            <InitGroup alias={alias()} setAlias={setAlias} />
+            <InitGroup alias={alias()} session={session()} setAlias={setAlias} />
         </main>
     );
 }

@@ -1,29 +1,39 @@
 import Redis from '~/models/redis';
 
 class RedisController {
-    store: Map <string, any>;
+    store: any;
 
-    constructor () {
-        this.store = Redis(); 
+    constructor (store) {
+        this.store = store; 
     }
 
-    async get (key: string) : Promise <any> {
-        const val = this.store.get(key);
-        return new Promise((resolve) => {
-            resolve(val); 
-        });
+    async get (key: string, parse: boolean = true) : Promise <any> {
+        try {
+            const val = await this.store.get(key);
+            const parsedVal = parse ? JSON.parse(val) : val; 
+            return new Promise((resolve) => resolve(parsedVal));;
+        } catch (e: Error) {
+            return new Promise((resolve) => resolve(new Error('Could not get key ' + key)));
+        }
     }
 
-    async set (key: string, value: any) : Promise <void> {
-        this.store.set(key, value);
-        return new Promise((resolve) => resolve());
-    }
+    async set (key: string, value: any, stringify: boolean = true) : Promise <void> {
+        try {
+            const encodedVal = stringify ? JSON.stringify(value) : value; 
+            return this.store.set(key, encodedVal);
+        } catch (e: Error) {
+            return new Promise((resolve) => resolve(new Error('Could set data for key ' + key)));
+        }
 
-    get pairs () : any {
-        return [...this.store.entries()];
     }
 }
 
+let redisController = null;
+export default async () => {
+    if (!redisController) {
+        const redisClient = await Redis();
+        redisController = new RedisController(redisClient);  
+    } 
 
-const redisController = new RedisController;
-export default redisController;
+    return new Promise((resolve) => resolve(redisController));;
+};
