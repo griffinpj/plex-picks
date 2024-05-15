@@ -70,6 +70,14 @@ export const setPlexPin = async (sessionId: string, pin: number): Promise<void> 
     return setUser(sessionId, newUser);
 };
 
+export const setPlexToken = async (sessionId: string, token: string): Promise<void> => {
+    'use server';
+    const user = (await getUser(sessionId)) as User;
+
+    const newUser = { ...user, plex_token: token } as User;
+    return setUser(sessionId, newUser);
+};
+
 export const setAlias = async (sessionId: string, alias: string): Promise<void> => {
     'use server';
     let user = (await getUser(sessionId)) as User;
