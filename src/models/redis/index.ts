@@ -1,7 +1,7 @@
-import { createClient } from 'redis';
+import { RedisClientType, createClient } from 'redis';
 
 
-export default async function () : any {
+export default async function () : Promise<RedisClientType> {
     'use server';
     const client = await createClient({
         url: process.env.REDIS_URL

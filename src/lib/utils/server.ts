@@ -8,12 +8,7 @@ export async function addToGroup (linkId: string) : Promise<void> {
     const req = getRequestEvent();
     const sessionId = await req?.locals.session.id;
 
-    const group = await groupModel.getGroup(linkId);
-    if (!group.users.includes(sessionId)) {
-        group.users = [...group.users, sessionId];
-    }
-
-    return groupModel.setGroup(linkId, group);
+    return groupModel.addUser(linkId, sessionId);
 }
 
 export async function getGroup (id: string) : Promise<Group> {
@@ -29,8 +24,13 @@ export async function getSession () : Promise<string> {
 
 export async function getAlias (session: string) : Promise<string> {
     'use server';
+    const alias = await sessionModel.getAlias(session);
+    if (!alias) {
+        const newUser = await sessionModel.createUser(session);
+        return new Promise((resolve) => resolve(newUser?.alias))
+    }
 
-    return groupModel.getAlias(session);
+    return new Promise((resolve) => resolve(alias));
 }
 
 export async function setAlias (session: string, alias: string) : Promise<void> {

@@ -1,9 +1,10 @@
+import { RedisClientType } from 'redis';
 import Redis from '~/models/redis';
 
 class RedisController {
     store: any;
 
-    constructor (store) {
+    constructor (store : RedisClientType) {
         this.store = store; 
     }
 
@@ -29,7 +30,7 @@ class RedisController {
 }
 
 let redisController = null;
-export default async () => {
+export default async () : Promise<RedisController> => {
     if (!redisController) {
         const redisClient = await Redis();
         redisController = new RedisController(redisClient);  

@@ -6,7 +6,7 @@ import * as request from '~/lib/utils/request';
 import SessionAlias from '~/components/SessionAlias';
 import "./InitGroup.css";
 
-export default function InitGroup (props: any) {
+export default function InitGroup () {
     const [ joinCode, setCode ] = createSignal('');
     const createGroupHandler = async () => {
         const data = await request.post('/api/group/new', {});

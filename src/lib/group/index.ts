@@ -1,4 +1,5 @@
 import RedisController from '~/lib/redis';
+import * as sessionModel from '~/lib/session';
 import type { Group } from '~/types/group';
 
 export const getGroup = async (id: string): Promise<Group> => {
@@ -14,11 +15,17 @@ export const setGroup = async (linkId: string, group: Group): Promise<void> => {
     return redis.set(linkId, group);
 };
 
-export const getAlias = async (session: string) : Promise<string> => {
+export const addUser = async (linkId: string, sessionId: string): Promise<void> => {
     'use server';
-    const redis = await RedisController();
-    return redis.get(`session-${session}`, false);
+    const group = await getGroup(linkId) as Group;
+
+    if (!group.users.includes(sessionId)) {
+        group.users = [...(group.users), sessionId];
+    }
+
+    return setGroup(linkId, group);
 };
+
 
 export const getAliasedGroup = async (id: string) : Promise<Group> => {
     'use server';
@@ -26,10 +33,10 @@ export const getAliasedGroup = async (id: string) : Promise<Group> => {
     let group = { ...(await redis.get(id)) };
 
     if (group.owner && group.users) {
-        group.owner = await redis.get(`session-${group.owner}`, false);
+        group.owner = await sessionModel.getAlias(group.owner);
         group.users = await Promise.all(
             group.users.map((session: String) => 
-                redis.get(`session-${session}`, false)
+                sessionModel.getAlias(session)
             )
         );
     } 

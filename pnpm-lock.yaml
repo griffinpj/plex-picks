@@ -20,6 +20,9 @@ importers:
       nanoid:
         specifier: ^5.0.7
         version: 5.0.7
+      plex-oauth:
+        specifier: ^2.1.0
+        version: 2.1.0
       redis:
         specifier: ^4.6.13
         version: 4.6.13
@@ -1019,6 +1022,9 @@ packages:
   async@3.2.5:
     resolution: {integrity: sha512-baNZyqaaLhyLVKm/DlvdW051MSgO6b8eVfIezl9E5PqWxFgzLm/wQntEW4zOytVburDEr0JlALEpdOFwvErLsg==}
 
+  axios@0.26.1:
+    resolution: {integrity: sha512-fPwcX4EvnSHuInCMItEhAGnaSEXRBjtzh9fOtsE6E1G6p7vl7edEeZe11QHf18+6+9gR5PbKV/sGKNaD8YaMeA==}
+
   b4a@1.6.6:
     resolution: {integrity: sha512-5Tk1HLk6b6ctmjIkAcU/Ujv/1WqiDl0F0JdRCR80VsOcUlHcu7pWeWRlOqQLHfDEsVx9YH/aif5AG4ehoCtTmg==}
 
@@ -2002,6 +2008,9 @@ packages:
 
   pkg-types@1.1.1:
     resolution: {integrity: sha512-ko14TjmDuQJ14zsotODv7dBlwxKhUKQEhuhmbqo1uCi9BB0Z2alo/wAXg6q1dTR5TyuqYyWhjtfe/Tsh+X28jQ==}
+
+  plex-oauth@2.1.0:
+    resolution: {integrity: sha512-q/T/ooR7Hc1qqKN08k5x6FuVeJ2a65RBxNlnF4ug0aH3iViREp8iT3siEaI4jEFyxUmZdQaY5JLItgD+dQv4KQ==}
 
   postcss@8.4.38:
     resolution: {integrity: sha512-Wglpdk03BSfXkHoQa3b/oulrotAkwrlLDRSOb9D0bN86FdRyE9lppSp33aHNPgBa0JKCoB+drFLZkQoRRYae5A==}
@@ -3514,6 +3523,12 @@ snapshots:
 
   async@3.2.5: {}
 
+  axios@0.26.1:
+    dependencies:
+      follow-redirects: 1.15.6
+    transitivePeerDependencies:
+      - debug
+
   b4a@1.6.6: {}
 
   babel-plugin-jsx-dom-expressions@0.37.20(@babel/core@7.24.5):
@@ -4557,6 +4572,12 @@ snapshots:
       confbox: 0.1.7
       mlly: 1.7.0
       pathe: 1.1.2
+
+  plex-oauth@2.1.0:
+    dependencies:
+      axios: 0.26.1
+    transitivePeerDependencies:
+      - debug
 
   postcss@8.4.38:
     dependencies:
