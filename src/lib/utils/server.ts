@@ -1,6 +1,8 @@
 import { getRequestEvent } from 'solid-js/web';
 import * as groupModel from '~/lib/group';
 import * as sessionModel from '~/lib/session';
+import { checkForAuthToken } from '~/lib/plex';
+
 import type { Group } from '~/types/group';
 import type { User } from '~/types/user';
 
@@ -8,6 +10,26 @@ export async function getSession () : Promise<string> {
     'use server';
     const req = getRequestEvent();
     return req?.locals.session.id;
+}
+
+export async function checkForPlexAuth () : Promise<boolean> {
+    'use server';
+    const user = await getUser();
+    let hasToken = !!user?.plex_token;
+    try {
+        if ((user?.plex_pin && !user?.plex_token)) {
+            const authToken = await checkForAuthToken(user.plex_pin);
+            hasToken = !!authToken;
+            if (authToken) {
+                await setPlexToken(authToken);
+            }
+        }
+    } catch (e) {
+        await setPlexPin(null);
+        return new Promise(resolve => resolve(false));
+    }
+
+    return new Promise(resolve => resolve(hasToken));
 }
 
 export async function addToGroup (linkId: string) : Promise<void> {
@@ -52,7 +74,7 @@ export async function setPlexToken (token: string) : Promise<void> {
     return sessionModel.setPlexToken(sessionId, token);
 }
 
-export async function setPlexPin (pin: number) : Promise<void> {
+export async function setPlexPin (pin: number | null) : Promise<void> {
     'use server';
     const sessionId = await getSession();
 

@@ -62,7 +62,7 @@ export const getAlias = async (sessionId: string) : Promise<string> => {
     return new Promise((resolve) => resolve(user?.alias));
 };
 
-export const setPlexPin = async (sessionId: string, pin: number): Promise<void> => {
+export const setPlexPin = async (sessionId: string, pin: number | null): Promise<void> => {
     'use server';
     const user = (await getUser(sessionId)) as User;
 

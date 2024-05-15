@@ -4,3 +4,19 @@
     flex-direction: row;
     justify-content: space-between;
 }
+
+.auth-success {
+    display: block;
+    width: 200px;
+    text-align: center;
+    display: inline;
+    padding: 0.5rem;
+    margin-left: 8px;
+    margin-right: 8px;
+    font-weight: bold;
+    border-radius: 3px;
+    border: 2px solid #F7C600;
+    background: transparent;
+    color: #F7C600;
+    opacity: 0.8;
+}
