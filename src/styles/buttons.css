@@ -1,8 +1,6 @@
 button {
     display: block;
     width: 200px;
-    margin-bottom: 16px;
-
     &.narrow {
         width: 100px;
     }

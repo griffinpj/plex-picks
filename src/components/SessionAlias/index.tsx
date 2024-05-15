@@ -1,16 +1,23 @@
 import * as request from '~/lib/utils/request';
+import * as serverUtils from '~/lib/utils/server';
+import { Show, Suspense, createResource, createSignal } from 'solid-js';
 import './index.css';
-import { createSignal } from 'solid-js';
 
-export default function SessionAlias(props : any) {
-    const [input, setInput] = createSignal(props.alias);
+export default function SessionAlias() {
+    
+    const [alias, { mutate }] = createResource(async () => {
+        const session = await serverUtils.getSession();
+        return await serverUtils.getAlias(session) 
+    });
+
+    const [input, setInput] = createSignal(alias()); 
 
     const updateNickname = async function () {
-        const data = await request.post(`/api/session/alias`, {
+        await request.post(`/api/session/alias`, {
             alias: input()
         });
 
-        props.setAlias(input());
+        mutate(input());
     };
 
     const updateAliasState = (e: KeyboardEvent) => {
@@ -20,19 +27,23 @@ export default function SessionAlias(props : any) {
     };
 
     return (
-        <div>
-            <input
-                type="text"
-                placeholder="Nickname"
-                autocomplete="off"
-                class="blue"
-                id="session-nickname"
-                value={input()}
-                onKeyUp={updateAliasState}
-            />
-            <button class="button blue narrow" onClick={updateNickname}>
-                Update 
-            </button>
+        <div class="m-right-8">
+            <Suspense>
+                <Show when={alias()}>
+                    <input
+                        type="text"
+                        placeholder="Nickname"
+                        autocomplete="off"
+                        class="blue"
+                        id="session-nickname"
+                        value={alias()}
+                        onKeyUp={updateAliasState}
+                    />
+                    <button class="button blue narrow" onClick={updateNickname}>
+                        Update 
+                    </button>
+                </Show>
+            </Suspense>
         </div>
     );
 }

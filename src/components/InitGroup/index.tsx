@@ -20,27 +20,27 @@ export default function InitGroup (props: any) {
 
     return (
         <div class="init-group-container">
-            <SessionAlias alias={props.alias} setAlias={props.setAlias} />
-            <h3 class="text-white"> Name: {props.alias} </h3>
-            <button
+            <div class="flex row">
+                <button
                 id="j-create-group" 
-                class="red"
+                class="red m-top-16"
                 onClick={ createGroupHandler }
-            >Create Group</button>
-            <label for="j-join-group">
-                Join Group
-                <input 
+                >Create Group</button>
+                <span class="flex m-top-32 m-left-32 m-right-32 text-white">or</span>
+                <div class="flex row">
+                    <input 
                     type="text"
                     id="j-join-group" 
                     placeholder="Enter Group Code"
                     onChange={(e) => { setCode(e.target.value); }}
-                />
-                <button
+                    />
+                    <button
                     id="j-create-group" 
-                    class="blue"
+                    class="blue m-top-16 narrow"
                     onClick={ () => joinGroupHandler(joinCode()) }
-                >Join Group</button>
-            </label>
+                    >Join Group</button>
+                </div>
+            </div>
         </div>
     );
 }
