@@ -17,6 +17,8 @@ export async function get (url: string, type = 'json') {
                 const xml = await response.text();
                 const json = JSON.parse(convert.xml2json(xml));
                 return new Promise((resolve) => resolve(json));                
+            case 'img': 
+                return response.blob();
             default:
                 return response.text();
         }

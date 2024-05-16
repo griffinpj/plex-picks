@@ -22,6 +22,18 @@ const fetchMedia = async (token: string, lib: Section) => {
     return new Promise((resolve) => resolve(res));
 };
 
+const fetchArt = async (token: string, ids: string []): Promise<Blob> => {
+    const url = `/library/metadata/${ids[0]}/art/${ids[1]}`;
+
+    return request.get(apiUrl(token, url), 'img');
+};
+
+const fetchThumbnail = async (token: string, ids: string []): Promise<Blob> => {
+    const url = `/library/metadata/${ids[0]}/thumb/${ids[1]}`;
+
+    return request.get(apiUrl(token, url), 'img');
+};
+
 const mapMovie = (movie: Media) : Movie => ({
     title: movie.attributes.title,
     studio: movie.attributes.studio,
@@ -31,11 +43,29 @@ const mapMovie = (movie: Media) : Movie => ({
         .map((ele: MediaMetadata) => ele.attributes.tag),
     tagline: movie.attributes.tagline,
     summary: movie.attributes.summary,
-    thumb: movie.attributes.thumb,
-    art: movie.attributes.art,
+    thumb: '/api/plex' + movie.attributes.thumb,
+    art: '/api/plex' + movie.attributes.art,
     contentRating: movie.attributes.contentRating,
     duration: movie.attributes.duration
 });
+
+export const art = async (token: string | null, ids: string []): Promise<ImageData> => {
+    'use server';
+    if (!token) {
+        throw new Error('Missing token');
+    }
+   
+    return fetchArt(token, ids);
+}
+
+export const thumb = async (token: string | null, ids: string []): Promise<ImageData> => {
+    'use server';
+    if (!token) {
+        throw new Error('Missing token');
+    }
+   
+    return fetchThumbnail(token, ids);
+}
 
 export const movies = async (token: string | null): Promise<Movie[]> => {
     'use server';
