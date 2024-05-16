@@ -1,8 +1,4 @@
-// https://www.npmjs.com/package/plex-oauth
 import { PlexOauth, IPlexClientDetails } from "plex-oauth"
-import * as serverUtils from '~/lib/utils/server';
-import * as sessionModel from '~/lib/session';
-import type { User } from '~/types/user';
 
 let clientInformation: IPlexClientDetails = {
     clientIdentifier: import.meta.env.VITE_PLEX_CLIENT, 

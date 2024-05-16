@@ -1,5 +1,6 @@
+import * as convert from 'xml-js';
 
-export async function get (url: string) {
+export async function get (url: string, type = 'json') {
     try {
         const response = await fetch(url, {
             method: 'GET'
@@ -9,7 +10,16 @@ export async function get (url: string) {
             throw new Error('Network response was not ok');
         }
 
-        return response.json();
+        switch (type) {
+            case 'json':
+                return response.json();
+            case 'xml':
+                const xml = await response.text();
+                const json = JSON.parse(convert.xml2json(xml));
+                return new Promise((resolve) => resolve(json));                
+            default:
+                return response.text();
+        }
     } catch (error) {
         console.error('Error:', error);
     }

@@ -21,7 +21,7 @@ export default function InitGroup() {
     }, 3000);
 
     return (
-        <div class="group-users-container">
+        <div class="group-users-container m-top-16">
             <button class="button red">Start Picking</button>
             <Suspense fallback={<div> Loading Owner</div>}>
                 <Show when={owner()}>

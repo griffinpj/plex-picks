@@ -38,9 +38,7 @@ export default function Header() {
                     <Show when={hasToken()} fallback={
                         <button onClick={handlePlexLogin} class="blue narrow">Plex Sign In</button>
                     }>
-                        <span class="auth-success">
-                            Authenticated
-                        </span>
+                    <button onClick={handlePlexLogin} class="yellow">Re-authenticate</button>
                     </Show>
                 </ Suspense>
             </div>

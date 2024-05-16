@@ -13,6 +13,23 @@ button {
     margin-right: 8px;
     transition-duration: 0.4s;
     text-decoration: none;
+    
+    &.yellow {
+        height: max-content;
+        background: transparent;
+        background-color: #a3d9ff;
+        color: white;
+        border: 2px solid #e5a00d;
+        background-color: #e5a00d;
+
+        &:hover {
+            background: transparent;
+            color: #e5a00d;
+            border: 2px solid #e5a00d;
+            cursor: pointer;
+            opacity: 0.8;
+        }
+    }
 
     &.red {
         height: max-content;
