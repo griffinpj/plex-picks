@@ -27,7 +27,7 @@ export default function SessionAlias() {
     };
 
     return (
-        <div class="m-right-8">
+        <div>
             <Suspense>
                 <Show when={alias()}>
                     <input

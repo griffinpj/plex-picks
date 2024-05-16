@@ -1,0 +1,27 @@
+.img-wrapper {
+    position: relative;
+    height: 300px;
+    width: 200px;
+}
+
+.img-desc {
+    display: flex;
+    position: absolute;
+    top: 0;
+    bottom: -4px;
+    left: 0;
+    right: -4px;
+    border-radius: 8px;
+    background: rgba(29, 106, 154, 0.72);
+    color: #fff;
+    visibility: hidden;
+    opacity: 0;
+
+    /* transition effect. not necessary */
+    transition: opacity .4s, visibility .4s;
+}
+
+.img-wrapper:hover .img-desc {
+  visibility: visible;
+  opacity: 1;
+}

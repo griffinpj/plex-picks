@@ -31,7 +31,7 @@ export default function Header() {
     setInterval(intervalFn, 2000)
 
     return (
-        <div class="header space-between flex row">
+        <div class="flex row space-between m-top-16">
             <div class="left">
                 <button onClick={homeClick} class="button red narrow">Home</button>
                 <Suspense when={hasToken()}>

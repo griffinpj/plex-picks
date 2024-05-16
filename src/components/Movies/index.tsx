@@ -2,6 +2,8 @@ import { For, Show, Suspense } from "solid-js";
 import { createStore } from 'solid-js/store';
 import * as request from '~/lib/utils/request';
 import type { Movie } from '~/types/plex';
+import MovieCard from '~/components/MovieCard';
+
 import './index.css';
 
 export default function Movies() {
@@ -17,15 +19,11 @@ export default function Movies() {
     return (
         <div>
             <button class="blue" onClick={getMovies}> Get Movies </ button>
-            Plex Movies
             <div class="movie-gallery">
                 <Suspense>
                     <Show when={movies}>
                         <For each={movies}>{(movie: Movie, i) => (
-                            <img 
-                                class="movie poster"
-                                src={movie.thumb} 
-                            /> 
+                            <MovieCard movie={movie}/>
                         )}</For>
                     </Show>
                 </Suspense>

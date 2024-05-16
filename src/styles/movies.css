@@ -1,0 +1,51 @@
+.movie-gallery {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-evenly;
+    padding: 20px;
+    text-decoration: none !important;
+}
+
+.movie {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    border-radius: 3px;
+    overflow: none;
+    width: 200px;
+    height: 300px;
+    padding: 20px;
+    padding-bottom: 60px;
+}
+
+.movie-meta {
+    width: 100%;
+    margin-top: 8px;
+    display: flex;
+    flex-direction: column;
+    text-align: left;
+}
+
+.poster {
+    border: 2px solid white;
+    border-radius: 8px;
+    width: 200px;
+    height: 300px;
+}
+
+.tagline {
+    width: 100%;
+    display: grid;
+    align-items: end;
+    padding-bottom: 16px;
+}
+
+.title {
+    color: white;
+}
+
+.year {
+    color: white;
+    opacity: 0.5;
+}
