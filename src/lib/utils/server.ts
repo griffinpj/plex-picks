@@ -50,13 +50,13 @@ export async function getMoviesSample (options: { size: number, genres: string [
     });
 
     let sample: Movie[];
-    let seenChoice: number[] = [];
-    while (seenChoice.length < (options.size < movies.length ? options.size: movies.length)) {
+    let choices: number[] = [];
+    while (choices.length < (options.size < movies.length ? options.size: movies.length)) {
         let r = Math.floor(Math.random() * movies.length);
-        if (seenChoice.indexOf(r) === -1) { seenChoice.push(r) };
+        if (choices.indexOf(r) === -1) { choices.push(r) };
     }
 
-    sample = seenChoice.map((idx) => movies[idx]);
+    sample = choices.map((idx) => movies[idx]);
     return new Promise(resolve => resolve(sample));
 }
 
