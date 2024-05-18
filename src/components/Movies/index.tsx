@@ -1,32 +1,48 @@
-import { For, Show, Suspense } from "solid-js";
-import { createStore } from 'solid-js/store';
-import * as request from '~/lib/utils/request';
-import type { Movie } from '~/types/plex';
+import { For, Show, Suspense, createResource, createSignal } from "solid-js";
+import * as serverUtils from '~/lib/utils/server';
 import MovieCard from '~/components/MovieCard';
-
+import type { Movie } from '~/types/plex';
 import './index.css';
 
+const SAMPLE_SIZE = 25;
+
 export default function Movies() {
-    const [movies, setMovies] = createStore([]);
-    
-    const getMovies = async () => {
-        const res = await request.get('/api/plex/movies');
-        if (res.movies) {
-            setMovies(res.movies);
+    const [ movies, { refetch, mutate }] = createResource(async () => serverUtils.getMoviesSample(SAMPLE_SIZE));
+    const [ size ] = createSignal(5);
+    const [ page, setPage ] = createSignal(0);
+
+    const isMaxPage = () => (page() * size()) >= (SAMPLE_SIZE - size());
+    const isMinPage = () => page() === 0;
+
+    const paginatedMovies = () => movies()?.slice(page() * size(), (page() * size()) + size());
+
+    const handleNext = () => {
+        if (isMaxPage()) {
+            return;
         }
+
+        setPage(page() + 1);
+    };
+
+    const handlePrev = () => {
+        if (isMinPage()) { return; }
+        setPage(page() - 1);
     };
 
     return (
-        <div>
-            <button class="blue" onClick={getMovies}> Get Movies </ button>
+        <div class="flex column space-between">
             <div class="movie-gallery">
                 <Suspense>
-                    <Show when={movies}>
-                        <For each={movies}>{(movie: Movie, i) => (
+                    <Show when={movies()}>
+                        <For each={paginatedMovies()}>{(movie: Movie, i) => (
                             <MovieCard movie={movie}/>
                         )}</For>
                     </Show>
                 </Suspense>
+            </div>
+            <div class="m-top-32">
+                <button class={'narrow ' + (isMinPage() ? 'disabled' : 'yellow')} disabled={isMinPage()} onClick={handlePrev}>Prev</button>
+                <button class={'narrow ' + (isMaxPage() ? 'disabled' : 'yellow')} disabled={isMaxPage()} onClick={handleNext}>Next</button>
             </div>
         </div>
     );

@@ -5,6 +5,12 @@ button {
         width: 100px;
     }
 
+    &.disabled {
+        opacity: 0.5;
+        cursor: default;
+        color: white;
+    }
+
     text-align: center;
     display: inline;
     border-radius: 3px;
@@ -13,9 +19,9 @@ button {
     margin-right: 8px;
     transition-duration: 0.4s;
     text-decoration: none;
+    height: max-content;
     
     &.yellow {
-        height: max-content;
         background: transparent;
         background-color: #a3d9ff;
         color: white;
@@ -32,7 +38,6 @@ button {
     }
 
     &.red {
-        height: max-content;
         background: transparent;
         background-color: #a3d9ff;
         color: white;
@@ -49,7 +54,6 @@ button {
     }
 
     &.blue {
-        height: max-content;
         background: transparent;
         background-color: #a3d9ff;
         color: white;

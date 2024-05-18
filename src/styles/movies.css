@@ -1,9 +1,7 @@
 .movie-gallery {
     display: flex;
-    flex-wrap: wrap;
     align-items: center;
     justify-content: space-evenly;
-    padding: 20px;
     text-decoration: none !important;
 }
 

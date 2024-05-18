@@ -11,10 +11,9 @@ export default function Group() {
     return (
         <main>
         <Title>Plex Picks</Title>
-        <h1>Get Ready!</h1>
+        <Movies />
         <h2 class="text-white">Join with: {params.id}</h2>
         <GroupUsers />
-        <Movies />
         </main>
     );
 }

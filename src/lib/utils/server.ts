@@ -2,14 +2,32 @@ import { getRequestEvent } from 'solid-js/web';
 import * as groupModel from '~/lib/group';
 import * as sessionModel from '~/lib/session';
 import { checkForAuthToken } from '~/lib/plex';
+import * as plexApi from '~/lib/plex/api';
 
 import type { Group } from '~/types/group';
 import type { User } from '~/types/user';
+import type { Movie } from '~/types/plex';
 
 export async function getSession () : Promise<string> {
     'use server';
     const req = getRequestEvent();
     return req?.locals.session.id;
+}
+
+export async function getMoviesSample (count: number) : Promise<Movie []> {
+    const sessionId = await getSession();
+    const user = await sessionModel.getUser(sessionId);
+    const token = user?.plex_token!;
+    const movies = await plexApi.movies(token);
+  
+    let choices : number [] = [];
+    let sample : Movie [];
+
+    for (let i = 0; i < 25; i ++) {
+        choices.push(Math.floor(Math.random() * movies.length));
+    }
+    sample = choices.map((idx) => movies[idx]);
+    return new Promise(resolve => resolve(sample));
 }
 
 export async function checkForPlexAuth () : Promise<boolean> {

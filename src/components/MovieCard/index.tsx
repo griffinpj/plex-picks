@@ -1,8 +1,6 @@
 import type { Movie } from '~/types/plex';
 
 export default function MovieCard (props: { movie : Movie }) {
-
-    console.log(props.movie);
     return (
         <div class="movie">
             <div class="img-wrapper">
