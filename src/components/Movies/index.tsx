@@ -29,6 +29,10 @@ export default function Movies() {
         setPage(page() - 1);
     };
 
+    /* TODO 
+        save movies to group
+        only load and save movies if there aren't any on the group
+    */
     return (
         <div class="flex column space-between">
             <div class="movie-gallery">
