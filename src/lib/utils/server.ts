@@ -14,18 +14,47 @@ export async function getSession () : Promise<string> {
     return req?.locals.session.id;
 }
 
-export async function getMoviesSample (count: number) : Promise<Movie []> {
+export async function getGenres () : Promise<string[]> {
+    'use server';
     const sessionId = await getSession();
     const user = await sessionModel.getUser(sessionId);
     const token = user?.plex_token!;
     const movies = await plexApi.movies(token);
-  
-    let choices : number [] = [];
-    let sample : Movie [];
 
-    for (let i = 0; i < 25; i ++) {
+    let genres = Array.from((new Set(movies
+        .reduce((acc: string [], movie : Movie) => ([
+            ...acc,
+            ...(movie.genre)
+        ]), []))).values());
+
+    return new Promise(resolve => resolve(genres));
+}
+
+export async function getMoviesSample (options: { size: number, genres: string []}) : Promise<Movie []> {
+    'use server';
+    const sessionId = await getSession();
+    const user = await sessionModel.getUser(sessionId);
+    const token = user?.plex_token!;
+    let movies = await plexApi.movies(token);
+
+    if (options.genres && options.genres.length) {
+        movies = movies.filter((movie: Movie) => movie.genre.some(g => options.genres.includes(g))); 
+    }
+
+    // let seen = new Set();
+    // movies = movies.filter((movie: Movie) => {
+    //     const title = movie.title.trim().toUpperCase();
+    //     const hasSeen = seen.has(title);
+    //     seen.add(title);
+    //     return !hasSeen;
+    // });
+
+    let sample : Movie [];
+    let choices : number [] = [];
+    for (let i = 0; i < (options.size < movies.length ? options.size: movies.length); i ++) {
         choices.push(Math.floor(Math.random() * movies.length));
     }
+
     sample = choices.map((idx) => movies[idx]);
     return new Promise(resolve => resolve(sample));
 }

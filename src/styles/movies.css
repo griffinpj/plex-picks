@@ -5,6 +5,42 @@
     text-decoration: none !important;
 }
 
+.genres {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    border-radius: 8px;
+
+    a {
+        height: min-content;
+        background: rgb(113, 196, 109);
+        margin-top: 16px;
+        margin-left: 4px;
+        margin-right: 4px;
+        padding: 12px;
+        border-radius: 8px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        transition-duration: 0.4s;
+        cursor: pointer;
+
+        &.clicked {
+            opacity: 0.5;
+        }
+
+        &:hover {
+            filter: brightness(170%);
+            color: black;
+        }
+
+    }
+
+    input[type="checkbox"] {
+        display: none;
+    }
+}
+
 .movie {
     display: flex;
     flex-direction: column;
