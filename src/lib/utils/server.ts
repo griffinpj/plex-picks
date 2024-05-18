@@ -41,21 +41,22 @@ export async function getMoviesSample (options: { size: number, genres: string [
         movies = movies.filter((movie: Movie) => movie.genre.some(g => options.genres.includes(g))); 
     }
 
-    // let seen = new Set();
-    // movies = movies.filter((movie: Movie) => {
-    //     const title = movie.title.trim().toUpperCase();
-    //     const hasSeen = seen.has(title);
-    //     seen.add(title);
-    //     return !hasSeen;
-    // });
+    let seen = new Set();
+    movies = movies.filter((movie: Movie) => {
+        const title = movie.title.trim().toUpperCase();
+        const hasSeen = seen.has(title);
+        seen.add(title);
+        return !hasSeen;
+    });
 
-    let sample : Movie [];
-    let choices : number [] = [];
-    for (let i = 0; i < (options.size < movies.length ? options.size: movies.length); i ++) {
-        choices.push(Math.floor(Math.random() * movies.length));
+    let sample: Movie[];
+    let seenChoice: number[] = [];
+    while (seenChoice.length < (options.size < movies.length ? options.size: movies.length)) {
+        let r = Math.floor(Math.random() * movies.length);
+        if (seenChoice.indexOf(r) === -1) { seenChoice.push(r) };
     }
 
-    sample = choices.map((idx) => movies[idx]);
+    sample = seenChoice.map((idx) => movies[idx]);
     return new Promise(resolve => resolve(sample));
 }
 
