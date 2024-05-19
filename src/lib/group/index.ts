@@ -26,6 +26,20 @@ export const addUser = async (linkId: string, sessionId: string): Promise<void> 
     return setGroup(linkId, group);
 };
 
+export const getGroupAliases = async (group: Group) : Promise<Map<string, string>> => {
+    'use server';
+    const aliasMap: Map<string, string> = new Map();
+
+    if (group.users) {
+        group.owner = await sessionModel.getAlias(group.owner);
+        for (let i = 0; i < group.users.length; i ++) {
+            const alias = await sessionModel.getAlias(group.users[i])
+            aliasMap.set(group.users[i], alias);
+        }
+    } 
+    
+    return new Promise((resolve) => resolve(aliasMap));
+};
 
 export const getAliasedGroup = async (id: string) : Promise<Group> => {
     'use server';
@@ -35,7 +49,7 @@ export const getAliasedGroup = async (id: string) : Promise<Group> => {
     if (group.owner && group.users) {
         group.owner = await sessionModel.getAlias(group.owner);
         group.users = await Promise.all(
-            group.users.map((session: String) => 
+            group.users.map((session: string) => 
                 sessionModel.getAlias(session)
             )
         );

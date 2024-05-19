@@ -88,9 +88,15 @@ export async function addToGroup (linkId: string) : Promise<void> {
     return groupModel.addUser(linkId, sessionId);
 }
 
+export async function getAliases (group: Group) : Promise<Map<string, string>> {
+    'use server';
+
+    return groupModel.getGroupAliases(group);
+}
+
 export async function getGroup (id: string) : Promise<Group> {
     'use server';
-    return groupModel.getAliasedGroup(id);
+    return groupModel.getGroup(id);
 }
 
 export async function getUser () : Promise<User> {
@@ -114,6 +120,7 @@ export async function getAlias (session: string) : Promise<string> {
 
     return new Promise((resolve) => resolve(alias));
 }
+
 
 export async function setPlexToken (token: string) : Promise<void> {
     'use server';

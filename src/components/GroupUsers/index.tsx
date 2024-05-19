@@ -4,36 +4,20 @@ import { createMemo, createResource, createSignal, For, Show, Suspense } from "s
 import "./GroupUsers.css";
 import { createStore } from 'solid-js/store';
 
-export default function InitGroup() {
-    const params = useParams();
-    const [group, { mutate }] = createResource(() => params.id, serverUtils.getGroup, {
-        initialValue: { owner: '', users: [] },
-        deferStream: true
-    });
-
-    const owner = () => (group()?.owner);
-    const users = () => (group()?.users);
-
-    /* Poll for group changes */
-    setInterval(async () => { 
-        const newGroup = await serverUtils.getGroup(params.id);
-        mutate(newGroup);
-    }, 3000);
-
+export default function GroupUsers (props: any) {
     return (
         <div class="group-users-container m-top-16">
-            <button class="button red">Start Picking</button>
             <Suspense fallback={<div> Loading Owner</div>}>
-                <Show when={owner()}>
+                <Show when={props.group}>
                     <h3>
                         Created By: 
-                        {owner()}
+                        {props.group.owner}
                     </h3>
                     <ul>
                         <Suspense >
-                            <Show when={users()}>
-                                <For each={users()}>{(user, i) =>
-                                    <li> { user } </li>
+                            <Show when={props.group}>
+                                <For each={props.group.users}>{(user) =>
+                                    <li> { user as string } </li>
                                 }</For>
                             </Show>
                         </Suspense>
