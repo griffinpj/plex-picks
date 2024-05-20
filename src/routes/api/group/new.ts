@@ -11,7 +11,9 @@ export async function POST({ params, locals }: APIEvent) {
 
     const group = {
         owner: sessionId,
-        users: [sessionId]
+        users: [sessionId],
+        stage: 'join',
+        selection: []
     } as Group;
     await groupModel.setGroup(linkId, group);
 

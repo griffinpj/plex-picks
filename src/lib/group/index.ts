@@ -15,6 +15,32 @@ export const setGroup = async (linkId: string, group: Group): Promise<void> => {
     return redis.set(linkId, group);
 };
 
+export const advanceStage = async (linkId: string): Promise<Group> => {
+    'use server';
+    const group = await getGroup(linkId); 
+    let stage: string;
+    switch (group.stage) {
+        case 'join':
+            stage = 'in-progress';
+            break;
+        case 'in-progress':
+            stage = 'results';
+            break;
+        default:
+            stage = 'join';
+            
+    };
+
+    const newGroup = {
+        ...group,
+        stage
+    } as Group;
+    await setGroup(linkId, newGroup);
+
+    return new Promise((resolve) => resolve(newGroup));
+};
+
+
 export const addUser = async (linkId: string, sessionId: string): Promise<void> => {
     'use server';
     const group = await getGroup(linkId) as Group;
@@ -31,7 +57,6 @@ export const getGroupAliases = async (group: Group) : Promise<Map<string, string
     const aliasMap: Map<string, string> = new Map();
 
     if (group.users) {
-        group.owner = await sessionModel.getAlias(group.owner);
         for (let i = 0; i < group.users.length; i ++) {
             const alias = await sessionModel.getAlias(group.users[i])
             aliasMap.set(group.users[i], alias);

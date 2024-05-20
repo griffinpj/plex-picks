@@ -9,7 +9,8 @@ const SAMPLE_SIZE = 25;
 
 export default function Movies (props: any) {
     // Signals
-    const [ movies, setMovies ] = createStore([]);
+    const [ movies, setMovies ] = createStore(props.movies);
+
     const [ loadingMovies, setLoadingMovies ] = createSignal(false);
     const [ size ] = createSignal(5);
     const [ page, setPage ] = createSignal(0);
@@ -29,15 +30,6 @@ export default function Movies (props: any) {
         if (isMinPage()) { return; }
         setPage(page() - 1);
     };
-   
-    const fetchMovies = async () => {
-        setLoadingMovies(true);
-        const sample = await serverUtils.getMoviesSample({ size: SAMPLE_SIZE, genres: props.genreFilter }) as Movie [];
-        setLoadingMovies(false);
-        if (Array.isArray(movies)) {
-            setMovies(sample);
-        }
-    };
 
     const paginatedMovies = () => movies?.slice(page() * size(), (page() * size()) + size());
 
@@ -50,7 +42,7 @@ export default function Movies (props: any) {
             <Show when={!loadingMovies()} fallback={
                     <p class="text-white">Loading picks ...</p>
                 }>
-                <button class="yellow" onClick={fetchMovies} >Pick movies</button>
+                <button class="yellow">Pick movies</button>
             </Show>
         }>
             <div class="flex column space-between">

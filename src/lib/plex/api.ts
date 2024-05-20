@@ -34,7 +34,7 @@ const fetchThumbnail = async (token: string, ids: string []): Promise<Blob> => {
     return request.get(apiUrl(token, url), 'img');
 };
 
-const mapMovie = (movie: Media) : Movie => ({
+const mapMovie = (groupId: string, movie: Media) : Movie => ({
     title: movie.attributes.title,
     studio: movie.attributes.studio,
     year: movie.attributes.year,
@@ -43,8 +43,8 @@ const mapMovie = (movie: Media) : Movie => ({
         .map((ele: MediaMetadata) => ele.attributes.tag),
     tagline: movie.attributes.tagline,
     summary: movie.attributes.summary,
-    thumb: '/api/plex' + movie.attributes.thumb,
-    art: '/api/plex' + movie.attributes.art,
+    thumb: `/api/group/${groupId}/plex` + movie.attributes.thumb,
+    art: `/api/group/${groupId}/plex`  + movie.attributes.art,
     contentRating: movie.attributes.contentRating,
     duration: movie.attributes.duration
 });
@@ -67,7 +67,7 @@ export const thumb = async (token: string | null, ids: string []): Promise<Image
     return fetchThumbnail(token, ids);
 }
 
-export const movies = async (token: string | null): Promise<Movie[]> => {
+export const movies = async (groupId: string, token: string | null): Promise<Movie[]> => {
     'use server';
     if (!token) {
         throw new Error('Missing token');
@@ -77,7 +77,7 @@ export const movies = async (token: string | null): Promise<Movie[]> => {
     const movieDir = await fetchSection(token, 'movie');
     const contents = await fetchMedia(token, movieDir) as Library;
     const movies = contents.elements[0].elements as Media[];
-    const mappedMovies = movies.map(mapMovie) as Movie[];
+    const mappedMovies = movies.map(movie => mapMovie(groupId, movie)) as Movie[];
 
     return new Promise(resolve => resolve(mappedMovies));
 };

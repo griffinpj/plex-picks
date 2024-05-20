@@ -2,64 +2,67 @@ import { Title } from "@solidjs/meta";
 import GroupUsers from '~/components/GroupUsers';
 import Movies from '~/components/Movies';
 import type { Group } from '~/types/group';
-import Genres from "~/components/Movies/genres";
 import * as serverUtils from '~/lib/utils/server';
 import { createStore } from "solid-js/store";
-import { Show, Suspense, createMemo, createResource } from "solid-js";
-import { createAsync, createAsyncStore } from "@solidjs/router";
+import { Match, Show, Suspense, Switch, createMemo, createResource, createSignal } from "solid-js";
 
 export default function Group(props: any) {
+    const [ stageTransition, setStageTransition ] = createSignal(false);
     const [ genreFilter, setGenreFilter ] = createStore([]);
     const [ session ]  = createResource(serverUtils.getSession);
 
-    const [ group, { mutate, refetch }] = createResource(async () => { 
-        const group = await serverUtils.getGroup(props.link);
-        const aliases = await serverUtils.getAliases(group);
-
-        return {
-            owner: { alias: aliases.get(group.owner), value: group.owner },
-            users: group.users.map((user: string) => ({
-                alias: aliases.get(user),
-                value: user
-            }))
-        };
-    });
-    
-
-    /* Poll for group changes */
-    setInterval(async () => { 
-        const newGroup = await serverUtils.getGroup(props.link);
+    const getMappedGroup = async (group: Group | void) => {
+        
+        const newGroup = group ? group : await serverUtils.getGroup(props.link);
         const aliases = await serverUtils.getAliases(newGroup);
 
-        const mappedGroup = {
+        return {
             owner: { alias: aliases.get(newGroup.owner), value: newGroup.owner },
             users: newGroup.users.map((user: string) => ({
                 alias: aliases.get(user),
                 value: user
-            }))
+            })),
+            stage: newGroup.stage,
+            selection: newGroup.selection
         };
-        mutate(mappedGroup);
-        // refetch(); // retriggers re render of elements... UI blinks...
-    }, 3000);
+    };
 
-    const isOwner = () => group()?.owner.value && session() && group()?.owner.value === session();
+    const [ group, { mutate }] = createResource(async () => await getMappedGroup());
 
-    // <Show when={isOwner()}>
-    //     <Genres genreFilter={genreFilter} setGenreFilter={setGenreFilter}/>
-    // </Show>
+    /* Poll for group changes */
+    setInterval(async () => mutate(await getMappedGroup()), 3000);
+
+    const handleStartPicking = async () => {
+        setStageTransition(true);
+        const group = await serverUtils.advanceStage(props.link);
+        mutate(await getMappedGroup(group))
+        setStageTransition(false);
+    };
+
+    const [ isOwner ] = createSignal(group()?.owner.value && session() && group()?.owner.value === session());
     return (
-        <div>
+        <Show when={!group.loading} fallback={<div class="text-white"> Loading group ... </div>}>
             <Title>Plex Picks</Title>
-           <Movies genreFilter={genreFilter}/>
-            <h2 class="text-white">Join with: {props.link}</h2>
-            <Suspense>
-                <Show when={isOwner()}>
-                    <button class="button red">Start Picking</button>
-                </Show>
-                <Show when={group()}>
-                    <GroupUsers group={group} />
-                </Show>
-            </Suspense>
-        </div>
+            <Switch>
+                <Match when={group()?.stage === 'join'}>
+                    <Show when={!stageTransition()} fallback={
+                        <div class="text-white"> Loading movie selection ... </div>
+                    }>
+                        <h2 class="text-white">Join with: {props.link}</h2>
+                        <Suspense>
+                            <Show when={isOwner()}>
+                                <button class="button red" onClick={handleStartPicking}>Start Picking</button>
+                            </Show>
+                            <GroupUsers group={group} />
+                        </Suspense>
+                    </Show>
+                </Match>
+                <Match when={group()?.stage === 'in-progress'}>
+                    <Show when={group()?.selection}>
+                        <Movies movies={group()?.selection} genreFilter={genreFilter}/>
+                    </Show> 
+                </Match>
+            </Switch>
+        </Show>
     );
 }

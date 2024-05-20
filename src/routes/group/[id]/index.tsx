@@ -1,14 +1,12 @@
 import { useParams } from "@solidjs/router";
-import { clientOnly } from "@solidjs/start";
+import Group from '~/components/Group';
 import './group.css';
-
-const ClientGroup = clientOnly(() => import('~/components/Group'));
 
 export default function GroupPage() {
     const params = useParams();
     return (
         <main>
-            <ClientGroup link={params.id}/>
+            <Group link={params.id}/>
         </main>
     );
 }

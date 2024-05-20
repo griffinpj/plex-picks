@@ -30,12 +30,12 @@ export async function getGenres () : Promise<string[]> {
     return new Promise(resolve => resolve(genres));
 }
 
-export async function getMoviesSample (options: { size: number, genres: string []}) : Promise<Movie []> {
+export async function getMoviesSample (options: { groupId: string, size: number, genres: string []}) : Promise<Movie []> {
     'use server';
     const sessionId = await getSession();
     const user = await sessionModel.getUser(sessionId);
     const token = user?.plex_token!;
-    let movies = await plexApi.movies(token);
+    let movies = await plexApi.movies(options.groupId, token);
 
     if (options.genres && options.genres.length) {
         movies = movies.filter((movie: Movie) => movie.genre.some(g => options.genres.includes(g))); 
@@ -59,6 +59,23 @@ export async function getMoviesSample (options: { size: number, genres: string [
     sample = choices.map((idx) => movies[idx]);
     return new Promise(resolve => resolve(sample));
 }
+
+export async function advanceStage (linkId: string) : Promise<Group> {
+    'use server';
+
+    let group = await groupModel.advanceStage(linkId);
+
+    console.log(group.stage);
+    switch (group.stage) {
+        case 'in-progress':
+            const movies = await getMoviesSample({ size: 25, genres: [], groupId: linkId });
+            group.selection = movies;
+            await groupModel.setGroup(linkId, group);
+            return new Promise((resolve) => resolve(group));
+    }
+
+    return new Promise((resolve) => resolve(group));
+};
 
 export async function checkForPlexAuth () : Promise<boolean> {
     'use server';
