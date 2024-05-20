@@ -8,21 +8,14 @@ export default function GroupUsers (props: any) {
     return (
         <div class="group-users-container m-top-16">
             <Suspense fallback={<div> Loading Owner</div>}>
-                <Show when={props.group}>
-                    <h3>
-                        Created By: 
-                        {props.group.owner}
-                    </h3>
-                    <ul>
-                        <Suspense >
-                            <Show when={props.group}>
-                                <For each={props.group.users}>{(user) =>
-                                    <li> { user as string } </li>
-                                }</For>
-                            </Show>
-                        </Suspense>
-                    </ul>
-                </Show>
+                <h3> Created By: { props.group()?.owner.alias } </h3>
+                <ul>
+                    <Suspense >
+                        <For each={props.group().users}>{(user) =>
+                            <li> { (user.alias ? user.alias : user.value) as string } </li>
+                        }</For>
+                    </Suspense>
+                </ul>
             </Suspense>
         </div>
     );
