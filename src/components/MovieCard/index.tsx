@@ -8,6 +8,7 @@ export default function MovieCard (props: any) {
     const handleLike = async (groupId: string, pick: boolean, movie: Movie) => {
         const picks = await serverUtils.groupPick(movie, groupId, pick);
         props.setUserPicks(picks);
+        props.nextMovie();
     };
 
     const isPicked = (movie: Movie) => {
@@ -36,7 +37,7 @@ export default function MovieCard (props: any) {
             </div>
             <div class="flex row m-top-8">
                 <button class="red narrow" onClick={() => handleLike(params.id, false, props.movie)}>No</button>
-                <button class="blue narrow" onClick={() => handleLike(params.id, true, props.movie)}>Yes</button>
+                <button class="green narrow" onClick={() => handleLike(params.id, true, props.movie)}>Yes</button>
             </div>
         </div>
     );

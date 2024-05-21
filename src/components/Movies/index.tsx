@@ -32,11 +32,16 @@ export default function Movies (props: any) {
     const paginatedMovies = () => movies?.slice(page() * size(), (page() * size()) + size());
     return (
         <div class="flex column space-between">
+            <div class="m-top-16">
+                <button class={'m-top-16 narrow ' + (isMinPage() ? 'disabled' : 'yellow')} disabled={isMinPage()} onClick={handlePrev}>Prev</button>
+                <button class={'narrow ' + (isMaxPage() ? 'disabled' : 'yellow')} disabled={isMaxPage()} onClick={handleNext}>Next</button>
+            </div>
             <div class="movie-gallery">
                 <Suspense>
                     <For each={paginatedMovies()}>{(movie: Movie, i) => (
                     <div class="flex column">
                         <MovieCard 
+                            nextMovie={handleNext}
                             setUserPicks={props.setUserPicks} 
                             userPicks={props.userPicks} 
                             movie={movie}
@@ -44,10 +49,6 @@ export default function Movies (props: any) {
                     </div>
                     )}</For>
                 </Suspense>
-            </div>
-            <div class="m-top-16">
-                <button class={'m-top-16 narrow ' + (isMinPage() ? 'disabled' : 'yellow')} disabled={isMinPage()} onClick={handlePrev}>Prev</button>
-                <button class={'narrow ' + (isMaxPage() ? 'disabled' : 'yellow')} disabled={isMaxPage()} onClick={handleNext}>Next</button>
             </div>
         </div>
     );

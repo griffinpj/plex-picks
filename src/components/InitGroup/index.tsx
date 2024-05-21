@@ -26,12 +26,13 @@ export default function InitGroup (props: any) {
                         <input 
                         type="text"
                         id="j-join-group" 
+                        class="blue input-button"
                         placeholder="Enter Group Code"
                         onChange={(e) => { setCode(e.target.value); }}
                         />
                         <button
                         id="j-create-group" 
-                        class="blue m-top-16 narrow"
+                        class="blue input-button narrow"
                         onClick={ () => joinGroupHandler(joinCode()) }
                         >Join Group</button>
                     </div>
