@@ -5,8 +5,7 @@ export async function attachSession (req: RequestMiddleware) {
         password: import.meta.env.VITE_SESSION_SECRET
     });
 
-    // TODO be able to let user attach session name ....
-    // persist with session id ?
+    // issue on mobile, session changing every refresh...
 
     req.locals.session = session;
 }

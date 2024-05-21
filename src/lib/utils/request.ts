@@ -3,7 +3,8 @@ import * as convert from 'xml-js';
 export async function get (url: string, type = 'json') {
     try {
         const response = await fetch(url, {
-            method: 'GET'
+            method: 'GET',
+            credentials: 'include'
         });
 
         if (!response.ok) {
@@ -31,6 +32,7 @@ export async function post (url: string, data: {}) {
     try {
         const response = await fetch(url, {
             method: 'POST',
+            credentials: 'include',
             headers: {
                 'Content-Type': 'application/json'
             },

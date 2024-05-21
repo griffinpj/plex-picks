@@ -126,8 +126,9 @@ export async function setAlias (session: string, alias: string) : Promise<void> 
     return sessionModel.setAlias(session, alias);
 }
 
-export async function getAlias (session: string) : Promise<string> {
+export async function getAlias () : Promise<string> {
     'use server';
+    const session = await getSession();
     const alias = await sessionModel.getAlias(session);
     if (!alias) {
         const newUser = await sessionModel.createUser(session);

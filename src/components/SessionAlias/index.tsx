@@ -6,8 +6,7 @@ import './index.css';
 export default function SessionAlias() {
     
     const [alias, { mutate }] = createResource(async () => {
-        const session = await serverUtils.getSession();
-        return await serverUtils.getAlias(session) 
+        return await serverUtils.getAlias() 
     });
 
     const [input, setInput] = createSignal(alias()); 
