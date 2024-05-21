@@ -36,7 +36,7 @@ export default function Header() {
             <button onClick={homeClick} class="button red medium">Home</button>
             <Suspense when={hasToken()}>
             <Show when={hasToken()} fallback={
-            <button onClick={handlePlexLogin} class="blue medium">Plex Sign In</button>
+                <button onClick={handlePlexLogin} class="blue medium">Plex Sign In</button>
             }>
             <button onClick={handlePlexLogin} class="yellow medium">Re-authenticate</button>
             </Show>
