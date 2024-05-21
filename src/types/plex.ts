@@ -95,6 +95,11 @@ export type Library = {
     }[]
 };
 
+export type Pick = {
+    id: string,
+    liked: boolean
+};
+
 export type Movie = {
     id: string,
     title: string,

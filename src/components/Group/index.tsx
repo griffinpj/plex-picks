@@ -10,6 +10,10 @@ export default function Group(props: any) {
     const [ stageTransition, setStageTransition ] = createSignal(false);
     const [ genreFilter, setGenreFilter ] = createStore([]);
     const [ session ]  = createResource(serverUtils.getSession);
+    const [ userPicks, { mutate: setUserPicks }] = createResource(async () => {
+        const user = await serverUtils.getUser();
+        return user.picks;
+    });
 
     const getMappedGroup = async (group: Group | void) => {
         
@@ -62,8 +66,12 @@ export default function Group(props: any) {
                     </Show>
                 </Match>
                 <Match when={group()?.stage === 'in-progress'}>
-                    <Show when={group()?.selection}>
-                        <Movies movies={group()!.selection} genreFilter={genreFilter}/>
+                    <Show when={group()?.selection && userPicks()}>
+                        <Movies 
+                            setUserPicks={setUserPicks} 
+                            userPicks={userPicks()} 
+                            movies={group()!.selection} 
+                            genreFilter={genreFilter}/>
                     </Show> 
                 </Match>
             </Switch>

@@ -6,7 +6,7 @@ import * as plexApi from '~/lib/plex/api';
 
 import type { Group } from '~/types/group';
 import type { User } from '~/types/user';
-import type { Movie } from '~/types/plex';
+import type { Movie, Pick } from '~/types/plex';
 
 export async function getSession () : Promise<string> {
     'use server';
@@ -14,21 +14,21 @@ export async function getSession () : Promise<string> {
     return req?.locals.session.id;
 }
 
-export async function getGenres () : Promise<string[]> {
-    'use server';
-    const sessionId = await getSession();
-    const user = await sessionModel.getUser(sessionId);
-    const token = user?.plex_token!;
-    const movies = await plexApi.movies(token);
+// export async function getGenres () : Promise<string[]> {
+//     'use server';
+//     const sessionId = await getSession();
+//     const user = await sessionModel.getUser(sessionId);
+//     const token = user?.plex_token!;
+//     const movies = await plexApi.movies(token);
 
-    let genres = Array.from((new Set(movies
-        .reduce((acc: string [], movie : Movie) => ([
-            ...acc,
-            ...(movie.genre)
-        ]), []))).values());
+//     let genres = Array.from((new Set(movies
+//         .reduce((acc: string [], movie : Movie) => ([
+//             ...acc,
+//             ...(movie.genre)
+//         ]), []))).values());
 
-    return new Promise(resolve => resolve(genres));
-}
+//     return new Promise(resolve => resolve(genres));
+// }
 
 export async function getMoviesSample (options: { groupId: string, size: number, genres: string []}) : Promise<Movie []> {
     'use server';
@@ -151,4 +151,30 @@ export async function setPlexPin (pin: number | null) : Promise<void> {
 
     return sessionModel.setPlexPin(sessionId, pin);
 }
+
+export const groupPick = async (movie: Movie, groupId: string, pick: boolean) : Promise<{}> => {
+    'use server';
+
+    const session = await getSession(); 
+    const user = await getUser();
+    
+    let picks = user.picks && user.picks[groupId] && user.picks[groupId]
+        ? user.picks
+        : {
+            ...(user.picks),
+            [groupId]: {
+                [movie.id]: false
+            }
+        };
+        
+    picks[groupId][movie.id] = pick;
+    
+    const newUser = {
+        ...user,
+        picks
+    } as User;
+
+    await sessionModel.setUser(session, newUser);
+    return new Promise((resolve) => resolve(picks));
+};
 

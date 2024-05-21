@@ -49,7 +49,7 @@ export const setUser = async (sessionId: string, user: User): Promise<void> => {
 export const createUser = async (sessionId: string): Promise<User> => {
     'use server';
     const randomIndex = Math.floor(Math.random() * randomAliases.length);
-    const newUser = { alias: randomAliases[randomIndex] } as User;
+    const newUser = { alias: randomAliases[randomIndex], picks: {} } as User;
 
     await setUser(sessionId, newUser);
     return new Promise((resolve) => resolve(newUser));

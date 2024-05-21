@@ -1,6 +1,7 @@
 import RedisController from '~/lib/redis';
 import * as sessionModel from '~/lib/session';
 import type { Group } from '~/types/group';
+import type { Movie } from '~/types/plex';
 
 export const getGroup = async (id: string): Promise<Group> => {
     'use server';
