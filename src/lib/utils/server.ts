@@ -65,7 +65,6 @@ export async function advanceStage (linkId: string) : Promise<Group> {
 
     let group = await groupModel.advanceStage(linkId);
 
-    console.log(group.stage);
     switch (group.stage) {
         case 'in-progress':
             const movies = await getMoviesSample({ size: 25, genres: [], groupId: linkId });

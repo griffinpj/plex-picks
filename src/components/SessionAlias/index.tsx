@@ -27,19 +27,19 @@ export default function SessionAlias() {
     };
 
     return (
-        <div>
+        <div class="flex m-top-16 m-left-8">
             <Suspense>
                 <Show when={alias()}>
                     <input
                         type="text"
                         placeholder="Nickname"
                         autocomplete="off"
-                        class="blue"
+                        class="blue input-button"
                         id="session-nickname"
                         value={alias()}
                         onKeyUp={updateAliasState}
                     />
-                    <button class="button blue narrow" onClick={updateNickname}>
+                    <button class="input-button blue narrow" onClick={updateNickname}>
                         Update 
                     </button>
                 </Show>

@@ -18,6 +18,7 @@
     }
     
     &.center {
+        align-items: center;
         justify-content: center;
     }
 }
@@ -30,6 +31,9 @@
     width: 100%;
 }    
 
+.m-left-8 {
+    margin-left: 8px;
+}
 
 .m-top-8 {
     margin-top: 8px;

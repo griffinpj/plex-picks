@@ -4,7 +4,7 @@ import Movies from '~/components/Movies';
 import type { Group } from '~/types/group';
 import * as serverUtils from '~/lib/utils/server';
 import { createStore } from "solid-js/store";
-import { Match, Show, Suspense, Switch, createMemo, createResource, createSignal } from "solid-js";
+import { Match, Show, Suspense, Switch, createEffect, createMemo, createResource, createSignal } from "solid-js";
 
 export default function Group(props: any) {
     const [ stageTransition, setStageTransition ] = createSignal(false);
@@ -30,7 +30,11 @@ export default function Group(props: any) {
     const [ group, { mutate }] = createResource(async () => await getMappedGroup());
 
     /* Poll for group changes */
-    setInterval(async () => mutate(await getMappedGroup()), 3000);
+    createEffect(() => {
+        if (group()?.stage !== 'in-progress') {
+            setInterval(async () => mutate(await getMappedGroup()), 3000);
+        }
+    });
 
     const handleStartPicking = async () => {
         setStageTransition(true);
@@ -59,7 +63,7 @@ export default function Group(props: any) {
                 </Match>
                 <Match when={group()?.stage === 'in-progress'}>
                     <Show when={group()?.selection}>
-                        <Movies movies={group()?.selection} genreFilter={genreFilter}/>
+                        <Movies movies={group()!.selection} genreFilter={genreFilter}/>
                     </Show> 
                 </Match>
             </Switch>

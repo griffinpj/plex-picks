@@ -1,6 +1,21 @@
+input[type='text'].input-button {
+    padding-right: 100px;
+}
+
+button.input-button {
+    margin-left: -100px;
+    height: auto;
+}
+
+
 button {
     display: block;
     width: 200px;
+
+    &.medium {
+        width: 152px;
+    }
+
     &.narrow {
         width: 100px;
     }

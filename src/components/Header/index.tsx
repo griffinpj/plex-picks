@@ -31,20 +31,18 @@ export default function Header() {
     setInterval(intervalFn, 2000)
 
     return (
-        <div class="flex row space-between m-top-16">
-            <div class="left">
-                <button onClick={homeClick} class="button red narrow">Home</button>
-                <Suspense when={hasToken()}>
-                    <Show when={hasToken()} fallback={
-                        <button onClick={handlePlexLogin} class="blue narrow">Plex Sign In</button>
-                    }>
-                    <button onClick={handlePlexLogin} class="yellow">Re-authenticate</button>
-                    </Show>
-                </ Suspense>
-            </div>
-            <div class="right">
-                <SessionAlias /> 
-            </div>
+        <div class="flex column center m-top-16">
+        <div class="flex row center">
+            <button onClick={homeClick} class="button red medium">Home</button>
+            <Suspense when={hasToken()}>
+            <Show when={hasToken()} fallback={
+            <button onClick={handlePlexLogin} class="blue medium">Plex Sign In</button>
+            }>
+            <button onClick={handlePlexLogin} class="yellow medium">Re-authenticate</button>
+            </Show>
+            </ Suspense>
+        </div>
+            <SessionAlias /> 
         </div>
    );
 }

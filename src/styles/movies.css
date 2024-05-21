@@ -47,8 +47,8 @@
     align-items: center;
     border-radius: 3px;
     overflow: none;
-    width: 200px;
-    height: 300px;
+    width: 300px;
+    height: 450px;
     padding: 20px;
     padding-bottom: 60px;
 }
@@ -64,8 +64,8 @@
 .poster {
     border: 2px solid white;
     border-radius: 8px;
-    width: 200px;
-    height: 300px;
+    width: 300px;
+    height: 450px;
 }
 
 .tagline {

@@ -35,6 +35,7 @@ const fetchThumbnail = async (token: string, ids: string []): Promise<Blob> => {
 };
 
 const mapMovie = (groupId: string, movie: Media) : Movie => ({
+    id: movie.attributes.guid.split('/')[3],
     title: movie.attributes.title,
     studio: movie.attributes.studio,
     year: movie.attributes.year,

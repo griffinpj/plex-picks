@@ -96,6 +96,7 @@ export type Library = {
 };
 
 export type Movie = {
+    id: string,
     title: string,
     studio: string,
     year: string,
